@@ -1,7 +1,7 @@
 #include "ThreadPool.h"
 #include <iostream>
 int main() {
-  ThreadPool pool(2);
+  ThreadPool pool(1);
 
   // 1) One-shot after 1 second
   pool.scheduleOnce([] { std::cout << "[One-shot] Runs after 1s.\n"; },
@@ -17,6 +17,12 @@ int main() {
       },
       std::chrono::milliseconds(0), std::chrono::milliseconds(500));
 
+  pool.scheduleOnce([] { std::cout << "[One-shot] Runs after 4s.\n"; },
+                    std::chrono::seconds(4));
+  pool.scheduleOnce([] { std::cout << "[One-shot] Runs after 6s.\n"; },
+                    std::chrono::seconds(6));
+  pool.scheduleOnce([] { std::cout << "[One-shot] Runs after 5s.\n"; },
+                    std::chrono::seconds(5));
   // 3) Repeating with zero interval => "run as quickly as possible"
   //    but we have a condition "run 5 times total"
   auto zeroCount = std::make_shared<int>(0);
@@ -33,7 +39,7 @@ int main() {
         return (*zeroCount < 5);
       });
 
-  std::this_thread::sleep_for(std::chrono::seconds(3));
+  std::this_thread::sleep_for(std::chrono::seconds(7));
   std::cout << "Main is done, pool destructor will stop the threads.\n";
   return 0;
 }
