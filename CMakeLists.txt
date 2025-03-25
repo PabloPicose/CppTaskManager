@@ -17,3 +17,9 @@ add_executable(CppTaskManagerExample
     example/main.cpp
 )
 target_link_libraries(CppTaskManagerExample PRIVATE CppTaskManager)
+
+# Another safer test
+add_executable(CppTaskManagerSafeExample
+    example/safe_example.cpp
+)
+target_link_libraries(CppTaskManagerSafeExample PRIVATE CppTaskManager)
